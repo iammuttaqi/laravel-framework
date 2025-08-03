@@ -116,6 +116,24 @@ if (! function_exists('class_uses_recursive')) {
     }
 }
 
+if (! function_exists('ddJson')) {
+    /**
+     * Dump the passed variables as a JSON response.
+     *
+     * @param  mixed  ...$vars
+     * @return never
+     */
+    function ddJson(mixed ...$vars): never
+    {
+        header('Content-Type: application/json; charset=utf-8');
+
+        $data = empty($vars) ? new \stdClass() : (count($vars) === 1 ? $vars[0] : $vars);
+
+        echo json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+        exit;
+    }
+}
+
 if (! function_exists('e')) {
     /**
      * Encode HTML special characters in a string.
