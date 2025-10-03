@@ -12,6 +12,13 @@ use ValueError;
 
 class SupportStrTest extends TestCase
 {
+    /** {@inheritdoc} */
+    #[\Override]
+    protected function tearDown(): void
+    {
+        Str::createRandomStringsNormally();
+    }
+
     public function testStringCanBeLimitedByWords(): void
     {
         $this->assertSame('Taylor...', Str::words('Taylor Otwell', 1));
@@ -482,6 +489,7 @@ class SupportStrTest extends TestCase
         $this->assertSame('what', Str::deduplicate('whaaat', 'a'));
         $this->assertSame('/some/odd/path/', Str::deduplicate('/some//odd//path/', '/'));
         $this->assertSame('ムだム', Str::deduplicate('ムだだム', 'だ'));
+        $this->assertSame(' laravel forever ', Str::deduplicate(' laravell    foreverrr  ', [' ', 'l', 'r']));
     }
 
     public function testParseCallback()
@@ -1857,6 +1865,13 @@ class SupportStrTest extends TestCase
         }, 'foo baz baz bar', 1);
 
         $this->assertSame('foo baZ baz bar', $result);
+    }
+
+    public function testPlural(): void
+    {
+        $this->assertSame('Laracon', Str::plural('Laracon', 1));
+        $this->assertSame('Laracons', Str::plural('Laracon', 3));
+        $this->assertSame('1,000 Laracons', Str::plural('Laracon', 1000, prependCount: true));
     }
 
     public function testPluralPascal(): void
